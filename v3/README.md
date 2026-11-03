@@ -1,7 +1,7 @@
 # WeatherKit v3 experimental add-on
 
-This add-on targets v3 responses and is intended to run alongside the original WeatherKit module. Disable other v3 response scripts to avoid processing the same response twice.
+This add-on runs alongside the original WeatherKit module. Disable other v3 response scripts. For v3 it processes only currentWeather, forecastDaily, and forecastHourly; air quality, alerts and other root datasets remain untouched. The current weather provider defaults to ColorfulClouds for CN unless configured otherwise.
 
-The bundle is the upstream v3.3.2 release (SHA-256 `ce1db90d77c44fce972db0c2e319845fc1d6a276d41d772c0294882e59d7f999`) with only the weather response path condition extended to v3. The corresponding source change is in `src/process/Response.mjs`. A source build could not be performed because the GitHub Packages dependencies require authentication.
+The bundle is based on the upstream v3.3.2 release (SHA-256 `ce1db90d77c44fce972db0c2e319845fc1d6a276d41d772c0294882e59d7f999`), with the v3 route, dataset restriction, and daily forecast merge fixes applied. Corresponding source changes are in `src/process/Response.mjs` and `src/class/Weather.mjs`. GitHub Packages authentication prevented a source build, so the changes were applied directly to the verified release bundle.
 
-V3 FlatBuffer compatibility is unverified: unknown fields within rewritten tables might be lost, even though unmodified root tables are preserved by the upstream processor. Disable this add-on if weather data is missing or incorrect. A captured v3 response is needed for compatibility testing.
+A captured v3 FlatBuffer and a live provider response were used to check that the three forecast slots are rewritten without a daily encoder error, and all other original root slots, including unknown slot 14, remain linked to original bytes. Fields within rewritten tables and operation on an actual device remain unverified. Disable this add-on if weather data is missing or incorrect.
