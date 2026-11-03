@@ -36,9 +36,18 @@ export default class Weather {
             if (forecastStart === newForecastStart) {
                 //Console.debug(`${i}: ${newForecastStart} -> ${forecastStart}`);
                 // 原地把 from[j] 的字段合入 to[i]（A 冲突字段保留 or 被覆盖，看你需要）
-                if (Object.hasOwn(from[j], "daytimeForecast")) from[j].daytimeForecast = { ...to[i].daytimeForecast, ...from[j].daytimeForecast };
-                if (Object.hasOwn(from[j], "overnightForecast")) from[j].overnightForecast = { ...to[i].overnightForecast, ...from[j].overnightForecast };
-                if (Object.hasOwn(from[j], "restOfDayForecast")) from[j].restOfDayForecast = { ...to[i].restOfDayForecast, ...from[j].restOfDayForecast };
+                if (Object.hasOwn(from[j], "daytimeForecast")) {
+                    if (to[i].daytimeForecast) from[j].daytimeForecast = { ...to[i].daytimeForecast, ...from[j].daytimeForecast };
+                    else delete from[j].daytimeForecast;
+                }
+                if (Object.hasOwn(from[j], "overnightForecast")) {
+                    if (to[i].overnightForecast) from[j].overnightForecast = { ...to[i].overnightForecast, ...from[j].overnightForecast };
+                    else delete from[j].overnightForecast;
+                }
+                if (Object.hasOwn(from[j], "restOfDayForecast")) {
+                    if (to[i].restOfDayForecast) from[j].restOfDayForecast = { ...to[i].restOfDayForecast, ...from[j].restOfDayForecast };
+                    else delete from[j].restOfDayForecast;
+                }
                 Object.assign(to[i], from[j]); // 或者：Object.assign(to[i], {/* 自定义映射 */})
                 i++;
                 j++;
