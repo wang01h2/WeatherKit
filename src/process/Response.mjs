@@ -87,7 +87,7 @@ export async function Response($request, $response) {
                     switch (url.hostname) {
                         case "weatherkit.apple.com":
                             // 路径判断
-                            if (url.pathname.startsWith("/api/v2/weather/")) {
+                            if (url.pathname.startsWith("/api/v2/weather/") || url.pathname.startsWith("/api/v3/weather/")) {
                                 const parameters = parseWeatherKitURL(url);
                                 const dataSets = parameters.dataSets.filter(dataSet => Settings.DataSets.includes(dataSet));
                                 const rootNames = dataSets.map(dataSet => Configs.DataSets[dataSet] ?? dataSet);
