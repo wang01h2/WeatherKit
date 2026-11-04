@@ -22,11 +22,11 @@ test('client response rules match v2 and v3 and use the integrated bundle', asyn
     }
 });
 
-test('v2 and v3 select the same configured weather datasets', async () => {
+test('v3 preserves next-hour data and retains other configured handlers', async () => {
     const source = await readFile(new URL('../src/process/Response.mjs', import.meta.url), 'utf8');
     const bundle = await readFile(new URL('../scripts/response.bundle.js', import.meta.url), 'utf8');
-    assert.match(source, /parameters\.dataSets\.filter\(dataSet => Settings\.DataSets\.includes\(dataSet\)\)/);
-    assert.match(bundle, /a\.dataSets\.filter\(t=>d\.DataSets\.includes\(t\)\)/);
+    assert.match(source, /parameters\.version !== "v3" \|\| dataSet !== "forecastNextHour"/);
+    assert.match(bundle, /a\.version!=="v3"\|\|t!=="forecastNextHour"/);
     for (const dataset of ['airQuality', 'forecastNextHour', 'weatherAlerts']) {
         assert.ok(source.includes(`case "${dataset}"`), `${dataset} handler`);
     }

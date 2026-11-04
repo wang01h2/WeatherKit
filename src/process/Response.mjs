@@ -90,7 +90,7 @@ export async function Response($request, $response) {
                             // 路径判断
                             if (url.pathname.startsWith("/api/v2/weather/") || url.pathname.startsWith("/api/v3/weather/")) {
                                 const parameters = parseWeatherKitURL(url);
-                                const dataSets = parameters.dataSets.filter(dataSet => Settings.DataSets.includes(dataSet));
+                                const dataSets = parameters.dataSets.filter(dataSet => Settings.DataSets.includes(dataSet) && (parameters.version !== "v3" || dataSet !== "forecastNextHour"));
                                 const rootNames = dataSets.map(dataSet => Configs.DataSets[dataSet] ?? dataSet);
                                 body = WeatherKit2.decode(ByteBuffer, rootNames);
                                 const providerParameters = { ...parameters, weatherKitLanguage: body.weatherAlerts?.metadata?.language };
