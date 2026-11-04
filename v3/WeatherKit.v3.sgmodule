@@ -1,8 +1,0 @@
-#!name = WeatherKit v3 补丁（实验版）
-#!desc = 实验版：仅处理当前天气及每日、每小时预报；请保留原模块并关闭其他 v3 补丁。
-
-[Script]
-WeatherKit v3 Response = type=http-response, pattern=^https?://weatherkit\.apple\.com/api/v3/weather/, requires-body=1, binary-body-mode=1, engine=webview, script-path=https://raw.githubusercontent.com/wang01h2/WeatherKit/main/v3/response.bundle.js
-
-[MITM]
-hostname = %APPEND% weatherkit.apple.com

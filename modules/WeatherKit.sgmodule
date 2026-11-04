@@ -1,0 +1,20 @@
+#!name = WeatherKit
+#!desc = 天气数据增强，支持 WeatherKit v2 和 v3
+#!homepage = https://github.com/wang01h2/WeatherKit
+#!openUrl = http://boxjs.com/#/app/iRingo.WeatherKit
+
+[Rule]
+DOMAIN,weather-analytics-events.apple.com,REJECT-DROP
+DOMAIN-SUFFIX,tthr.apple.com,REJECT-DROP,extended-matching
+DOMAIN,tether.edge.apple,REJECT-DROP,extended-matching
+AND,((OR,((IP-ASN,714,no-resolve),(IP-ASN,6185,no-resolve))),(PROTOCOL,QUIC)),REJECT-DROP
+
+[Script]
+WeatherKit availability = type=http-response, pattern=^https?:\/\/weatherkit\.apple\.com\/api\/v1\/availability\/, requires-body=1, engine=webview, script-path=https://github.com/NSRingo/WeatherKit/releases/download/v3.3.2/response.bundle.js
+WeatherKit airQualityScale = type=http-request, pattern=^https?:\/\/weatherkit\.apple\.com\/api\/v1\/airQualityScale\/, engine=webview, script-path=https://github.com/NSRingo/WeatherKit/releases/download/v3.3.2/request.bundle.js
+WeatherKit weatherAlerts HTML = type=http-request, pattern="^https?:\/\/weatherkit\.apple\.com\/api\/v1\/weatherAlerts\?[^#]*&ids=[^&#]*-[0-9]{9}(?:&|$)", script-path=https://github.com/NSRingo/WeatherKit/releases/download/v3.3.2/request.bundle.js
+WeatherKit weatherAlerts API = type=http-request, pattern="^https?:\/\/weatherkit\.apple\.com\/api\/v1\/weatherAlerts\?[^#]*&ids=-?[0-9]+(?:\.[0-9]+)?,-?[0-9]+(?:\.[0-9]+)?(?:&|$)", script-path=https://github.com/NSRingo/WeatherKit/releases/download/v3.3.2/request.bundle.js
+WeatherKit weather = type=http-response, pattern=^https?:\/\/weatherkit\.apple\.com\/api\/v[23]\/weather\/, requires-body=1, binary-body-mode=1, engine=webview, script-path=https://raw.githubusercontent.com/wang01h2/WeatherKit/main/scripts/response.bundle.js
+
+[MITM]
+hostname = %APPEND% weatherkit.apple.com
