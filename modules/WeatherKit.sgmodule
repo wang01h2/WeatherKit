@@ -14,7 +14,7 @@ WeatherKit availability = type=http-response, pattern=^https?:\/\/weatherkit\.ap
 WeatherKit airQualityScale = type=http-request, pattern=^https?:\/\/weatherkit\.apple\.com\/api\/v1\/airQualityScale\/, engine=webview, script-path=https://github.com/NSRingo/WeatherKit/releases/download/v3.3.2/request.bundle.js
 WeatherKit weatherAlerts HTML = type=http-request, pattern="^https?:\/\/weatherkit\.apple\.com\/api\/v1\/weatherAlerts\?[^#]*&ids=[^&#]*-[0-9]{9}(?:&|$)", script-path=https://github.com/NSRingo/WeatherKit/releases/download/v3.3.2/request.bundle.js
 WeatherKit weatherAlerts API = type=http-request, pattern="^https?:\/\/weatherkit\.apple\.com\/api\/v1\/weatherAlerts\?[^#]*&ids=-?[0-9]+(?:\.[0-9]+)?,-?[0-9]+(?:\.[0-9]+)?(?:&|$)", script-path=https://github.com/NSRingo/WeatherKit/releases/download/v3.3.2/request.bundle.js
-WeatherKit weather = type=http-response, pattern=^https?:\/\/weatherkit\.apple\.com\/api\/v[23]\/weather\/, requires-body=1, binary-body-mode=1, engine=webview, script-path=https://raw.githubusercontent.com/wang01h2/WeatherKit/main/scripts/response.bundle.js
+WeatherKit weather = type=http-response, pattern=^https?:\/\/weatherkit\.apple\.com\/api\/v[23]\/weather\/, requires-body=1, binary-body-mode=1, engine=webview, script-path=https://raw.githubusercontent.com/wang01h2/WeatherKit/codex/weatherkit-v3/scripts/response.bundle.js
 
 [MITM]
 hostname = %APPEND% weatherkit.apple.com

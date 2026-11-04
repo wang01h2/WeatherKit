@@ -17,7 +17,7 @@ test('client response rules match v2 and v3 and use the integrated bundle', asyn
             assert.ok(regex.test(`${base}v2/weather/zh-Hans-US/36.064/120.318`));
             assert.ok(regex.test(`${base}v3/weather/zh-Hans-US/36.064/120.318?country=CN`));
             assert.ok(!regex.test(`${base}v1/weather/zh-Hans-US/36.064/120.318`));
-            assert.match(template, /https:\/\/raw\.githubusercontent\.com\/wang01h2\/WeatherKit\/main\/scripts\/response\.bundle\.js/);
+            assert.match(template, /https:\/\/raw\.githubusercontent\.com\/wang01h2\/WeatherKit\/codex\/weatherkit-v3\/scripts\/response\.bundle\.js/);
         }
     }
 });
