@@ -1,0 +1,12 @@
+#!name = WeatherKit 原始响应抓取
+#!desc = 保留网络规则和 MITM，不修改天气响应。抓取时请关闭其他 WeatherKit 模块。
+#!homepage = https://github.com/wang01h2/WeatherKit
+
+[Rule]
+DOMAIN,weather-analytics-events.apple.com,REJECT-DROP
+DOMAIN-SUFFIX,tthr.apple.com,REJECT-DROP,extended-matching
+DOMAIN,tether.edge.apple,REJECT-DROP,extended-matching
+AND,((OR,((IP-ASN,714,no-resolve),(IP-ASN,6185,no-resolve))),(PROTOCOL,QUIC)),REJECT-DROP
+
+[MITM]
+hostname = %APPEND% weatherkit.apple.com
