@@ -12,6 +12,7 @@ import mergeWeatherKitAvailability from "../function/mergeWeatherKitAvailability
 import parseWeatherKitURL from "../function/parseWeatherKitURL.mjs";
 import providerNameToLogo from "../function/providerNameToLogo.mjs";
 import setENV from "../function/setENV.mjs";
+import { decodeV3AirQuality, encodeV3AirQuality } from "../function/v3AirQuality.mjs";
 /***************** Processing *****************/
 export async function Response($request, $response) {
     // 解构URL
@@ -104,7 +105,18 @@ export async function Response($request, $response) {
                                     dataSets.map(async dataSet => {
                                         switch (dataSet) {
                                             case "airQuality": {
-                                                body.airQuality = await InjectAirQuality(body.airQuality, Settings, Caches, enviroments);
+                                                if (parameters.version === "v3") {
+                                                    const originalPrimary = body.airQuality?.primaryPollutant;
+                                                    const decoded = decodeV3AirQuality(body.airQuality);
+                                                    if (decoded) {
+                                                        const result = await InjectAirQuality(decoded, Settings, Caches, enviroments, { fixUnits: false });
+                                                        body.airQuality = encodeV3AirQuality(result, originalPrimary);
+                                                    }
+                                                    // Unknown enum values must leave the original FlatBuffer slot untouched.
+                                                    if (!body.airQuality || !decoded) delete body.airQuality;
+                                                } else {
+                                                    body.airQuality = await InjectAirQuality(body.airQuality, Settings, Caches, enviroments);
+                                                }
                                                 break;
                                             }
                                             case "currentWeather": {
@@ -357,10 +369,10 @@ async function InjectWeatherAlerts(weatherAlerts, Settings, enviroments) {
  * @param {any} enviroments - 各数据源实例与定位信息
  * @returns {Promise<any>} 合并后的空气质量对象
  */
-async function InjectAirQuality(airQuality, Settings, Caches, enviroments) {
+async function InjectAirQuality(airQuality, Settings, Caches, enviroments, { fixUnits = true } = {}) {
     // Step1. 修复污染物单位
     // Step 1. Fix pollutant units.
-    airQuality = AirQuality.FixPollutantsUnits(airQuality);
+    if (fixUnits) airQuality = AirQuality.FixPollutantsUnits(airQuality);
 
     // Step2. 判断原始污染物是否为空，并在需要时注入污染物数据
     const isPollutantEmpty = !Array.isArray(airQuality?.pollutants) || airQuality.pollutants.length === 0;
